@@ -13,11 +13,8 @@ on:
         default: '1.61.0.0'
 
 jobs:
-  release-v4_4:
+  release-v4_4-esp32:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        board: ['esp32', 'esp32s2', 'esp32s3', 'esp32c3']
     steps:
       -
         name: Checkout
@@ -37,23 +34,20 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
       -
-        name: Build and push - ${{ matrix.board }}_v4.4_${{ github.event.inputs.toolchain-version }} tag
+        name: Build and push - esp32_v4.4_${{ github.event.inputs.toolchain-version }} tag
         uses: docker/build-push-action@v2
         with:
           file: idf-rust.Containerfile
           build-args: |
             XTENSA_TOOLCHAIN_VERSION=${{ github.event.inputs.toolchain-version }}
             ESP_IDF_VERSION=release/v4.4
-            ESP_BOARD=${{ matrix.board }}
+            ESP_BOARD=esp32
           context: .
           platforms: linux/amd64, linux/arm64
           push: true
-          tags: espressif/idf-rust:${{ matrix.board }}_v4.4_${{ github.event.inputs.toolchain-version }}
-  master:
+          tags: espressif/idf-rust:esp32_v4.4_${{ github.event.inputs.toolchain-version }}
+  release-v4_4-esp32s2:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        board: ['esp32', 'esp32s2', 'esp32s3', 'esp32c3']
     steps:
       -
         name: Checkout
@@ -73,18 +67,214 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
       -
-        name: Build and push - ${{ matrix.board }}_master_${{ github.event.inputs.toolchain-version }} tag
+        name: Build and push - esp32s2_v4.4_${{ github.event.inputs.toolchain-version }} tag
+        uses: docker/build-push-action@v2
+        with:
+          file: idf-rust.Containerfile
+          build-args: |
+            XTENSA_TOOLCHAIN_VERSION=${{ github.event.inputs.toolchain-version }}
+            ESP_IDF_VERSION=release/v4.4
+            ESP_BOARD=esp32s2
+          context: .
+          platforms: linux/amd64, linux/arm64
+          push: true
+          tags: espressif/idf-rust:esp32s2_v4.4_${{ github.event.inputs.toolchain-version }}
+  release-v4_4-esp32s3:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.rust-build-branch }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      -
+        name: Build and push - esp32s3_v4.4_${{ github.event.inputs.toolchain-version }} tag
+        uses: docker/build-push-action@v2
+        with:
+          file: idf-rust.Containerfile
+          build-args: |
+            XTENSA_TOOLCHAIN_VERSION=${{ github.event.inputs.toolchain-version }}
+            ESP_IDF_VERSION=release/v4.4
+            ESP_BOARD=esp32s3
+          context: .
+          platforms: linux/amd64, linux/arm64
+          push: true
+          tags: espressif/idf-rust:esp32s3_v4.4_${{ github.event.inputs.toolchain-version }}
+  release-v4_4-esp32c3:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.rust-build-branch }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      -
+        name: Build and push - esp32c3_v4.4_${{ github.event.inputs.toolchain-version }} tag
+        uses: docker/build-push-action@v2
+        with:
+          file: idf-rust.Containerfile
+          build-args: |
+            XTENSA_TOOLCHAIN_VERSION=${{ github.event.inputs.toolchain-version }}
+            ESP_IDF_VERSION=release/v4.4
+            ESP_BOARD=esp32c3
+          context: .
+          platforms: linux/amd64, linux/arm64
+          push: true
+          tags: espressif/idf-rust:esp32c3_v4.4_${{ github.event.inputs.toolchain-version }}
+  master-v4_4-esp32:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.rust-build-branch }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      -
+        name: Build and push - esp32_master_${{ github.event.inputs.toolchain-version }} tag
         uses: docker/build-push-action@v2
         with:
           file: idf-rust.Containerfile
           build-args: |
             XTENSA_TOOLCHAIN_VERSION=${{ github.event.inputs.toolchain-version }}
             ESP_IDF_VERSION=master
-            ESP_BOARD=${{ matrix.board }}
+            ESP_BOARD=esp32
           context: .
           platforms: linux/amd64, linux/arm64
           push: true
-          tags: espressif/idf-rust:${{ matrix.board }}_master_${{ github.event.inputs.toolchain-version }}
-
-
+          tags: espressif/idf-rust:esp32_master_${{ github.event.inputs.toolchain-version }}
+  master-esp32s2:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.rust-build-branch }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      -
+        name: Build and push - esp32s2_master_${{ github.event.inputs.toolchain-version }} tag
+        uses: docker/build-push-action@v2
+        with:
+          file: idf-rust.Containerfile
+          build-args: |
+            XTENSA_TOOLCHAIN_VERSION=${{ github.event.inputs.toolchain-version }}
+            ESP_IDF_VERSION=master
+            ESP_BOARD=esp32s2
+          context: .
+          platforms: linux/amd64, linux/arm64
+          push: true
+          tags: espressif/idf-rust:esp32s2_master_${{ github.event.inputs.toolchain-version }}
+  master-esp32s3:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.rust-build-branch }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      -
+        name: Build and push - esp32s3_master_${{ github.event.inputs.toolchain-version }} tag
+        uses: docker/build-push-action@v2
+        with:
+          file: idf-rust.Containerfile
+          build-args: |
+            XTENSA_TOOLCHAIN_VERSION=${{ github.event.inputs.toolchain-version }}
+            ESP_IDF_VERSION=master
+            ESP_BOARD=esp32s3
+          context: .
+          platforms: linux/amd64, linux/arm64
+          push: true
+          tags: espressif/idf-rust:esp32s3_master_${{ github.event.inputs.toolchain-version }}
+  master-esp32c3:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.rust-build-branch }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      -
+        name: Build and push - esp32c3_master_${{ github.event.inputs.toolchain-version }} tag
+        uses: docker/build-push-action@v2
+        with:
+          file: idf-rust.Containerfile
+          build-args: |
+            XTENSA_TOOLCHAIN_VERSION=${{ github.event.inputs.toolchain-version }}
+            ESP_IDF_VERSION=master
+            ESP_BOARD=esp32c3
+          context: .
+          platforms: linux/amd64, linux/arm64
+          push: true
+          tags: espressif/idf-rust:esp32c3_master_${{ github.event.inputs.toolchain-version }}
 
